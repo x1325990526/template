@@ -1,26 +1,17 @@
 {
-  "name": "restaurant-page-",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "dev": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "deploy": "npm run build && gh-pages -d dist -b gh-pages",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/x1325990526/restaurant-page-.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
-  "bugs": {
-    "url": "https://github.com/x1325990526/restaurant-page-/issues"
-  },
-  "homepage": "https://x1325990526.github.io/restaurant-page-/",
   "devDependencies": {
     "css-loader": "^7.1.5",
     "gh-pages": "^6.3.0",
