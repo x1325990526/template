@@ -22,6 +22,25 @@ npm run dev
 | `npm run dev` | 启动开发服务器，自动打开浏览器，改代码实时刷新 |
 | `npm run build` | 生产构建，产物输出到 `dist/` |
 | `npm run deploy` | 先构建，再把 `dist/` 推送到 origin 的 `gh-pages` 分支 |
+| `npm run test` | 跑一遍全部测试 |
+| `npm run test:watch` | watch 模式，改动文件后自动重跑 |
+
+## 测试
+
+用 Jest 跑单元测试。项目是 ESM（`package.json` 里的 `"type": "module"`），所以由 Babel 先转译再执行，转译规则写在 `babel.config.cjs`，不需要改 webpack 配置。
+
+```bash
+npm run test              # 跑一遍
+npm run test:watch        # 持续监听，改完自动重跑
+npm run test -- math      # 只跑文件名匹配 math 的测试文件
+npm run test -- -t "adds" # 只跑测试名匹配 adds 的用例
+```
+
+约定：
+
+- 测试文件命名 `*.test.js` 或 `*.spec.js`，放在被测模块旁边（`src/math.js` ↔ `src/math.test.js`），放在 `__tests__/` 目录里也能被识别。
+- Jest 默认运行环境是 `node`。要测 DOM（`document`、`window`），先 `npm i -D jest-environment-jsdom`，再在 `package.json` 里加 `"jest": { "testEnvironment": "jsdom" }`。
+- 模板默认不带测试文件。一个都没有时 `npm test` 会以非零码退出（Jest 找不到测试就报错），写了第一个测试文件才会变绿。
 
 ## 目录结构
 
@@ -31,10 +50,11 @@ npm run dev
 │   ├── index.js          # JS 入口（webpack entry）
 │   ├── template.html     # HTML 模板，HtmlWebpackPlugin 会用它生成 index.html
 │   └── styles.css        # 样式，由 index.js import
+├── babel.config.cjs      # Babel 配置，Jest 用它转译 ESM 源码
 ├── webpack.common.js     # 共享配置：entry / output / loader / plugin
 ├── webpack.dev.js        # 开发配置：development 模式 + devServer
 ├── webpack.prod.js       # 生产配置：production 模式
-├── package.json
+├── package.json          # 依赖与脚本（dev / build / deploy / test）
 └── dist/                 # 构建产物（已 gitignore，不需要提交）
 ```
 
@@ -44,6 +64,7 @@ npm run dev
 - **JS 逻辑** → `src/index.js`
 - **样式** → `src/styles.css`
 - **图片、其他模块** → 放进 `src/` 即可
+- **测试** → 和被测模块放在一起，命名 `src/xxx.test.js`
 
 只需要记住两条约定：
 
